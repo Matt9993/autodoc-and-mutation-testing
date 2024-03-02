@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "dev_helper_tools_project"
+version = "0.1.0"
+description = "Showcase mutation testing and autodoc"
+authors = ["Mate Hricz"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+poethepoet = "^0.16.4"
+moto = "^4.0.9"
+mutmut = "^2.4.2"
+coverage = "5.5.0"
+pytest = "^7.1.2"
+pydantic = "^1.9.2"
+Sphinx = "^5.3.0"
+sphinx_rtd_theme = "^1.1.0"
+autodoc-pydantic = "^1.8.0"
+mutatest = "3.1.0"
+cosmic-ray = "8.3.5"
+
+[build-system]
+requires = ["poetry-core>=1.2.1"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+omit = ['*__init__*', "tests/*", '*/Caches/pypoetry/virtualenvs/*']
+
+[tool.poe.tasks]
+# Tests
+unit-test = "pytest tests/"
+# Code coverage
+test-coverage = [
+    { cmd = "coverage run -m pytest tests/" },
+    { cmd = "coverage report -m" } ]
+# Mutation test
+mutation = "mutmut run"
+# Document generation
+auto-doc = [
+    { cmd = "sphinx-apidoc -o docs src" },
+    { cmd = "sphinx-build -b html docs docs/_build"}]
